@@ -1,8 +1,7 @@
 pipeline {
     agent any
     parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
-        choice(name: 'action', choices: ['apply', 'destroy'], description: 'Select the action to perform')
+        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select action: apply or destroy')
     }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
@@ -31,7 +30,7 @@ pipeline {
         }
         stage('Approval For Apply') {
             when {
-                expression { params.action == 'apply' }
+                expression { params.ACTION == 'apply' }
             }
             steps {
                 // Prompt for approval before applying changes
@@ -41,7 +40,7 @@ pipeline {
 
         stage('Terraform Apply') {
             when {
-                expression { params.action == 'apply' }
+                expression { params.ACTION == 'apply' }
             }
             steps {
                 // Run Terraform apply
@@ -56,7 +55,7 @@ pipeline {
 
         stage('Approval for Destroy') {
             when {
-                expression { params.action == 'destroy' }
+                expression { params.ACTION == 'destroy' }
             }
             steps {
                 // Prompt for approval before destroying resources
@@ -66,7 +65,7 @@ pipeline {
 
         stage('Terraform Destroy') {
             when {
-                expression { params.action == 'destroy' }
+                expression { params.ACTION == 'destroy' }
             }
             steps {
                 // Destroy Infra
@@ -75,11 +74,11 @@ pipeline {
         }
         stage('Posgresql Deploy') {
             when {
-                expression { params.action == 'apply' }
+                expression { params.ACTION == 'apply' }
             }
             steps {
                 // Deploy Pgsql
-                sh '''cd /var/lib/jenkins/workspace/prometheus_role/
+                sh '''cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
                 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml    '''
             }
         }
