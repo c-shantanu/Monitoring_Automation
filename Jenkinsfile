@@ -7,8 +7,8 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TERRAFORM_WORKSPACE = "/var/lib/jenkins/workspace/prometheus_infra/"
-        INSTALL_WORKSPACE = "/var/lib/jenkins/workspace/prometheus_role/"
+        TERRAFORM_WORKSPACE = "/var/lib/jenkins/workspace/tool_deploy/prometheus_infra/"
+        INSTALL_WORKSPACE = "/var/lib/jenkins/workspace/tool_deploy/prometheus_role/"
     }
     stages {
         stage('Clone Repository') {
