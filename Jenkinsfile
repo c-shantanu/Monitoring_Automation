@@ -82,8 +82,8 @@ pipeline {
                 sh 'chown jenkins /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
                 //sh 'service ssh start'
                 //sh 'ssh-add /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
-                sh '''cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
-                ANSIBLE_HOST_KEY_CHECKING=True ansible-playbook playbook.yml    '''
+                sh 'cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/'
+                sh 'ansible-playbook playbook.yml'
             }
         }
 
