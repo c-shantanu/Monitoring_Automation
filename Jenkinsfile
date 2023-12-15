@@ -47,8 +47,8 @@ pipeline {
                 sh """
                     cd ${env.TERRAFORM_WORKSPACE}
                     terraform apply -auto-approve
-                    sudo cp ${env.TERRAFORM_WORKSPACE}/mykey.pem ${env.INSTALL_WORKSPACE}
-                    sudo chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
+                    cp ${env.TERRAFORM_WORKSPACE}/mykey.pem ${env.INSTALL_WORKSPACE}
+                    chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
                 """       
             }
         }
