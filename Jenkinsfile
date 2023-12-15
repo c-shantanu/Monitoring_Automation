@@ -48,7 +48,7 @@ pipeline {
                     cd ${env.TERRAFORM_WORKSPACE}
                     terraform apply -auto-approve
                     cp ${env.INSTALL_WORKSPACE}/mykey.pem ${env.TERRAFORM_WORKSPACE}
-                    chmod 600 ${env.INSTALL_WORKSPACE}/mykey.pem
+                    chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
                 """       
             }
         }
