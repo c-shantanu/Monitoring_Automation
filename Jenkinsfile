@@ -79,7 +79,7 @@ pipeline {
             steps {
                 // Deploy Prometheus
                 sh 'chmod 600 /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
-                sh 'chown Jenkins /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
+                sh 'chown jenkins /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
                 sh 'ssh-add /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
                 sh '''cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
                 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml    '''
