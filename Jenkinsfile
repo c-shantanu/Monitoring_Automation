@@ -72,12 +72,12 @@ pipeline {
                 sh "cd ${env.TERRAFORM_WORKSPACE} && terraform destroy -auto-approve"
             }
         }
-        stage('Posgresql Deploy') {
+        stage('Prometheus Deploy') {
             when {
                 expression { params.ACTION == 'apply' }
             }
             steps {
-                // Deploy Pgsql
+                // Deploy Prometheus
                 sh '''cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
                 ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml    '''
             }
