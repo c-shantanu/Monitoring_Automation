@@ -18,7 +18,7 @@ module "Security" {
     bastion_instance_name = var.pub_instance_name
     private_instance_name = var.pvt_instance_name
     instance_type = var.instancetype
-    seq_grp = var.seqgrp
+    sec_grp = var.secgrp
     key_name = var.keyname
     subnet_pub_id = module.netwoking.pub_subnet_id[0]
     subnet_pvt_id = module.netwoking.pri_subnet_id
