@@ -4,15 +4,13 @@ pipeline {
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select action: apply or destroy')
     }
     environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
         TERRAFORM_WORKSPACE = "/var/lib/jenkins/workspace/tool_deploy/prometheus_infra/"
         INSTALL_WORKSPACE = "/var/lib/jenkins/workspace/tool_deploy/prometheus_role/"
     }
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/c-shantanu/monitoring_automation.git'
+                git branch: 'master', url: 'https://github.com/c-shantanu/monitoring_automation.git'
             }
         } 
         stage('Terraform Init') {
@@ -47,8 +45,8 @@ pipeline {
                 sh """
                     cd ${env.TERRAFORM_WORKSPACE}
                     terraform apply -auto-approve
-                    cp ${env.INSTALL_WORKSPACE}/mykey.pem ${env.TERRAFORM_WORKSPACE}
-                    chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
+                    sudo cp ${env.TERRAFORM_WORKSPACE}/mykey.pem ${env.INSTALL_WORKSPACE}
+                    sudo chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
                 """       
             }
         }
@@ -72,18 +70,14 @@ pipeline {
                 sh "cd ${env.TERRAFORM_WORKSPACE} && terraform destroy -auto-approve"
             }
         }
-        stage('Prometheus Deploy') {
+        stage('logstash Deploy') {
             when {
                 expression { params.ACTION == 'apply' }
             }
             steps {
-                // Deploy Prometheus
-                sh 'chmod 600 /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
-                sh 'chown jenkins /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
-                //sh 'service ssh start'
-                //sh 'ssh-add /var/lib/jenkins/workspace/tool_deploy/prometheus_role/mykey.pem'
-                sh ''' cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
-                ansible-playbook playbook.yml'''
+                // Deploy logstash
+                sh '''cd /var/lib/jenkins/workspace/tool_deploy/prometheus_role/
+                ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook playbook.yml    '''
             }
         }
 
