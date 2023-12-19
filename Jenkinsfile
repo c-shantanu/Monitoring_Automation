@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'master', url: 'https://github.com/c-shantanu/monitoring_automation.git'
+                git branch: 'main', url: 'https://github.com/c-shantanu/monitoring_automation.git'
             }
         } 
         stage('Terraform Init') {
