@@ -15,7 +15,7 @@ resource "aws_subnet" "public" {
   count = length(var.public_subnet_names)
   vpc_id = aws_vpc.test_vpc.id
   cidr_block = var.pub_cidr[count.index]
-  availability_zone = "ap-northeast-1${element(["a", "c"], count.index % 2)}"
+  availability_zone = "ap-southeast-1${element(["a", "c"], count.index % 2)}"
   tags = {
     Name = var.public_subnet_names[count.index]
   }
@@ -25,7 +25,7 @@ resource "aws_subnet" "private" {
   count = length(var.private_subnet_names)
   vpc_id = aws_vpc.test_vpc.id
   cidr_block = var.pv_cidr[count.index]
-  availability_zone = "ap-northeast-1${element(["a", "c"], count.index % 2)}"
+  availability_zone = "ap-southeast-1${element(["a", "c"], count.index % 2)}"
 
   tags = {
     Name = var.private_subnet_names[count.index]
@@ -117,7 +117,7 @@ resource "aws_route_table_association" "private" {
 #VPC Peering 
 
 resource "aws_vpc_peering_connection" "vpc_peering" {
-  vpc_id          = "vpc-0149ec820fb077af3"
+  vpc_id          = "vpc-0a5cc043287a0b892"
   peer_vpc_id     = aws_vpc.test_vpc.id
   auto_accept     = true
 
