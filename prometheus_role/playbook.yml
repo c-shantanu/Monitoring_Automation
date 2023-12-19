@@ -1,11 +1,11 @@
 - name: install monitoring stack
-  hosts: _Name_prometheus_grafana
+  hosts: _Name_tf_Master
   become: yes
   roles:
   - prometheus
   - grafana
 - name: install node-exporter
-  hosts: _Name_node_exporter
+  hosts: _Name_tf_Slave
   become: yes
   roles:
   - node-exporter
