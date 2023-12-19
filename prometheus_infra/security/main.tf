@@ -77,7 +77,6 @@ resource "aws_instance" "private-ec2" {
   }
   tags = {
     Name = var.private_instance_name[count.index]
-    DB = "Postgresql"
   }
 }
 
