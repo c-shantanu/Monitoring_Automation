@@ -2,7 +2,7 @@ terraform {
 
   backend "s3" {
 
-    bucket         = "terraform-bucket-83030"
+    bucket         = "shantanu-tool"
 
     key            = "Postgresql/terraform.tfstate"
 
