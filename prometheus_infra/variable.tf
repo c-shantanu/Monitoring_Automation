@@ -54,7 +54,7 @@ variable "instancetype" {
   type = string   
   default = "t2.micro"
 }
-variable "secgrp" {
+variable "seqgrp" {
   type = string   
   default = "tf"
 }
