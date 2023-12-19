@@ -10,7 +10,7 @@ locals {
  }
 
 resource "aws_security_group" "sq_grp" {
-  name        = "sec_grp"
+  name        = "seq_grp"
   description = "Security group for EC2 instance"
   vpc_id = var.vpc_id
 
