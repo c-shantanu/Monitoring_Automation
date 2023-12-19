@@ -1,6 +1,6 @@
 variable "vpcname" {
   type = string   
-  default = "Postgresql"
+  default = "tf"
 }
 variable "vpctenancy" {
     type = string
@@ -12,7 +12,7 @@ variable "vpccidr" {
 }
 variable "pub_sub_names" {
   type = list(string)  
-  default = ["Pgsql-pub-sub-01", "Pgsql-pub-sub-02"]
+  default = ["tf-pub-sub-01", "tf-pub-sub-02"]
 }
 variable "pubcidr" {
   type = list(string)    
@@ -20,7 +20,7 @@ variable "pubcidr" {
 }
 variable "pvt_sub_names" {
   type = list(string)    
-  default = ["Pgsql-pvt-sub-01", "Pgsql-pvt-sub-02"]
+  default = ["tf-pvt-sub-01", "tf-pvt-sub-02"]
 }
 variable "pvtcidr" {
   type = list(string)    
@@ -32,33 +32,33 @@ variable "pub_instance_name" {
 }
 variable "pvt_instance_name" {
   type = list(string)  
-  default = ["Pgsql-Master","Pgsql-Slave"]  
+  default = ["tf-Master","tf-Slave"]  
 }
 variable "igwname" {
   type = string   
-  default = "Psql-igw-01"
+  default = "tf-igw-01"
 }
 variable "natname" {
   type = string   
-  default = "Pgsql-nat-01"
+  default = "tf-nat-01"
 }
 variable "public_rt_names" {
   type = string   
-  default = "Pgsql-route-pub-01"
+  default = "tf-route-pub-01"
 }
 variable "private_rt_names" {
   type = string   
-  default = "Pgsql-route-pvt-01"
+  default = "tf-route-pvt-01"
 }
 variable "instancetype" {
   type = string   
   default = "t2.micro"
 }
-variable "seqgrp" {
+variable "secgrp" {
   type = string   
-  default = "Pgsql"
+  default = "tf"
 }
 variable "keyname" {
   type = string
-  default = "pgsql.pem"
+  default = "mykey.pem"
 }
