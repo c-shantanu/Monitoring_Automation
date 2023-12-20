@@ -1,11 +1,13 @@
 - name: install monitoring stack
-  hosts: _Name_tf_Master
+  hosts: _Name_bastion-instance
   become: yes
   roles:
   - prometheus
   - grafana
 - name: install node-exporter
-  hosts: _Name_tf_Slave
+  hosts: 
+    -_Name_tf_Slave
+    -_Name_tf_Master
   become: yes
   roles:
   - node-exporter
