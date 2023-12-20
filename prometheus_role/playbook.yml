@@ -1,5 +1,5 @@
 - name: install monitoring stack
-  hosts: _Name_bastion-instance
+  hosts: _Name_bastion_instance
   become: yes
   roles:
   - prometheus
