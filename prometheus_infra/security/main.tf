@@ -3,6 +3,7 @@ locals {
  inbound_ports = [
   { port = 80, protocol = "tcp" },
   { port = 9090, protocol = "tcp" },
+  { port = 80, protocol = "tcp" },
   { port = 3000, protocol = "tcp" },
   { port = 22, protocol = "tcp" },   
   { port = 443, protocol = "tcp" },  
