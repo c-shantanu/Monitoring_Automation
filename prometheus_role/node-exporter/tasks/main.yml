@@ -1,58 +1,91 @@
 ---
-# tasks file for roles/node-exporter
-- name: check if node exporter exist
-  stat:
-    path: "{{ node_exporter_bin }}"
-  register: __check_node_exporter_present
-- name: create node exporter user
+- name: Ensure the required packages are installed
+  become: yes
+  package:
+    name:
+      - wget
+      - tar
+  ignore_errors: yes
+
+- name: Add the 'node_exp' user
+  become: yes
   user:
-    name: "{{ node_exporter_user }}"
-    append: true
-    shell: /usr/sbin/nologin
-    system: true
-    create_home: false
-- name: create node exporter config dir
+    name: "{{user}}"
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Create a directory for node_exp installation
+  become: yes
   file:
-    path: "{{ node_exporter_dir_conf }}"
+    path: /home/node_exp
+    owner: "{{user}}"
+    group: "{{group}}"
     state: directory
-    owner: "{{ node_exporter_user }}"
-    group: "{{ node_exporter_group }}"
-- name: if node exporter exist get version
-  shell: "cat /etc/systemd/system/node_exporter.service | grep Version | sed s/'.*Version '//g"
-  when: __check_node_exporter_present.stat.exists == true
-  changed_when: false
-  register: __get_node_exporter_version
-  
-- name: download and unzip node exporter if not exist
-  unarchive:
-    src: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
-    dest: /tmp/
+
+- name: download node_exporter archive
+  become: yes
+  get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v{{ version }}/node_exporter-{{ version }}.linux-amd64.tar.gz
+    dest: /home/node_exp/
+
+- name: Extract node_exporter archive
+  become: yes
+  ansible.builtin.unarchive:
+    src: /home/node_exp/node_exporter-{{ version }}.linux-amd64.tar.gz
+    dest: /home/node_exp
     remote_src: yes
-    validate_certs: no
-- name: move the binary to the final destination
-  copy:
-    src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
-    dest: "{{ node_exporter_bin }}"
-    owner: "{{ node_exporter_user }}"
-    group: "{{ node_exporter_group }}"
-    mode: 0755
-    remote_src: yes
-  when: __check_node_exporter_present.stat.exists == false or not __get_node_exporter_version.stdout == node_exporter_version
-- name: clean
-  file:
-    path: /tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/
-    state: absent
-- name: install service
+    creates: /home/node_exp/node_exporter-{{ version }}.linux-amd64
+
+- name: create an empty file for node_exp.services
+  become: yes
+  ansible.builtin.file:
+    path: /etc/systemd/system/node_exp.service
+    state: touch
+    owner: "{{user}}"
+    group: "{{group}}"
+    mode: 0644
+
+- name: Replace the content of /etc/systemd/system/node_exp.service
   template:
-    src: node_exporter.service.j2
-    dest: /etc/systemd/system/node_exporter.service
+    src: node_exp.service.j2
+    dest: /etc/systemd/system/node_exp.service
     owner: root
     group: root
-    mode: 0755
-  notify: reload_daemon_and_restart_node_exporter
-- meta: flush_handlers
-- name: service always started
-  systemd:
-    name: node_exporter
-    state: started
-    enabled: yes
+    mode: 0644
+  become: true
+        
+- name: Reload systemd
+  become: yes
+  command: systemctl daemon-reload
+    
+- name: Creating a script
+  copy:
+    dest: ./run_node_exporter.sh
+    content: |
+      #!/bin/bash
+      # Change to the desired directory
+      cd /home/node_exp/node_exporter-1.7.0.linux-amd64
+      # Run the node_exporter command in the background
+      ./node_exporter &
+      
+- name: script
+  become: yes
+  command: cat ./run_node_exporter.sh
+      
+      
+- name: giving permission to execute
+  file:
+    path: ./run_node_exporter.sh
+    mode: 777
+
+
+- name: running script
+  become: yes
+  command: ./run_node_exporter.sh
+      
+
+# - name: command
+#   become: yes
+#   command: ./node_exporter chdir=/home/node_exp/node_exporter-1.7.0.linux-amd64 &
+  
