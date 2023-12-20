@@ -1,8 +1,6 @@
 ---
-# handlers file for roles/node-exporter
-- name: reload_daemon_and_restart_node_exporter
-  systemd:
-    name: node_exporter
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
+- name: Reload systemd
+  become: yes
+  command: systemctl daemon-reload
+  listen: systemd_reload
+  
