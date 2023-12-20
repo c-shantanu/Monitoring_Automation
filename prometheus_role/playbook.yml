@@ -4,6 +4,7 @@
   roles:
   - prometheus
   - grafana
+  - alertmanager
 - name: install node-exporter
   hosts: 
     -_Name_tf_Slave
