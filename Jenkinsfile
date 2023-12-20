@@ -1,6 +1,7 @@
 pipeline {
     agent any
     parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select action: apply or destroy')
     }
     environment {
@@ -70,7 +71,7 @@ pipeline {
                 sh "cd ${env.TERRAFORM_WORKSPACE} && terraform destroy -auto-approve"
             }
         }
-        stage('logstash Deploy') {
+        stage('Tool Deploy') {
             when {
                 expression { params.ACTION == 'apply' }
             }
