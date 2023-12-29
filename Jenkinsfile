@@ -45,6 +45,8 @@ pipeline {
                 sh """
                     cd ${env.TERRAFORM_WORKSPACE}
                     terraform apply -auto-approve
+                    terraform output IP_Public_Bastion >Ip.txt
+                    sudo scp -o StrictHostKeyChecking=no -i "mykey.pem" "mkey.pem" ubuntu@`cat Ip.txt | sed 's/"//g'`:/home/ubuntu/
                     sudo cp ${env.TERRAFORM_WORKSPACE}/mykey.pem ${env.INSTALL_WORKSPACE}
                     sudo chown jenkins:jenkins ${env.INSTALL_WORKSPACE}/mykey.pem
                     sudo chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
