@@ -46,6 +46,7 @@ pipeline {
                     cd ${env.TERRAFORM_WORKSPACE}
                     terraform apply -auto-approve
                     sudo cp ${env.TERRAFORM_WORKSPACE}/mykey.pem ${env.INSTALL_WORKSPACE}
+                    sudo chown jenkins:jenkins ${env.INSTALL_WORKSPACE}/mykey.pem
                     sudo chmod 400 ${env.INSTALL_WORKSPACE}/mykey.pem
                 """       
             }
