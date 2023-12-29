@@ -127,7 +127,7 @@ resource "aws_vpc_peering_connection" "vpc_peering" {
 }
 
 resource "aws_route" "Existing_route" {
-  route_table_id            = "rtb-07fba0593fd27c2a8"  
+  route_table_id            = "rtb-01de70a0262893154"  
   destination_cidr_block    = var.vpc_cidr 
   vpc_peering_connection_id = aws_vpc_peering_connection.vpc_peering.id
   depends_on = [ aws_vpc_peering_connection.vpc_peering ]
