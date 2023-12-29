@@ -1,7 +1,6 @@
 pipeline {
     agent any
     parameters {
-        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
         choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select action: apply or destroy')
     }
     environment {
